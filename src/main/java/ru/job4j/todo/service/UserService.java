@@ -9,5 +9,5 @@ public interface UserService {
 
     Optional<User> findByLoginAndPassword(String login, String password);
 
-    Optional<User>findById(int userId);
+    Optional<User> findById(int userId);
 }
