@@ -8,9 +8,11 @@ import java.util.Optional;
 public interface TaskRepository {
     Task create(Task task);
 
-    void update(Task task);
+    boolean update(Task task);
 
-    void deleteById(int taskId);
+    boolean deleteById(int taskId);
+
+    boolean makeDone(int taskId);
 
     List<Task> findAll();
     List<Task> findAllByDone(boolean isDone);

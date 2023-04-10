@@ -32,33 +32,58 @@ public class HbmTaskRepository implements TaskRepository {
     }
 
     @Override
-    public void update(Task task) {
+    public boolean update(Task task) {
         Session session = sf.openSession();
+        boolean result = true;
         try {
             session.beginTransaction();
             session.update(task);
             session.getTransaction().commit();
         } catch (Exception exception) {
+            result = false;
             session.getTransaction().rollback();
         } finally {
             session.close();
         }
+        return result;
     }
 
     @Override
-    public void deleteById(int taskId) {
+    public boolean deleteById(int taskId) {
         Session session = sf.openSession();
+        boolean result = false;
         try {
             session.beginTransaction();
-            session.createQuery("DELETE Task WHERE id = :id")
-                    .setParameter("id", taskId)
-                    .executeUpdate();
+            var query = session.createQuery("DELETE Task WHERE id = :id")
+                    .setParameter("id", taskId);
+            result = query.executeUpdate() > 0;
             session.getTransaction().commit();
         } catch (Exception exception) {
             session.getTransaction().rollback();
         } finally {
             session.close();
         }
+        return result;
+    }
+
+    @Override
+    public boolean makeDone(int taskId) {
+        Session session = sf.openSession();
+        boolean result = false;
+        try {
+            session.beginTransaction();
+            var query = session.createQuery(
+                            "UPDATE Task SET done = :done WHERE id = :id")
+                    .setParameter("done", true)
+                    .setParameter("id", taskId);
+            result = query.executeUpdate() > 0;
+            session.getTransaction().commit();
+        } catch (Exception exception) {
+            session.getTransaction().rollback();
+        } finally {
+            session.close();
+        }
+        return result;
     }
 
     @Override
