@@ -31,7 +31,7 @@ public class UserController {
         user.setName("Гость");
         if (userOptional.isEmpty()) {
             model.addAttribute("error", "Не удалось зарегистрироваться!"
-                    + " Попробуйте ещё раз");
+                    + " Возможно, данный логин занят. Попробуйте ещё раз");
             return "errors/404";
         }
         return "users/login";
