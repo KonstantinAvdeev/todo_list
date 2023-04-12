@@ -22,39 +22,42 @@ public class HbmTaskRepository implements TaskRepository {
 
     @Override
     public boolean update(Task task) {
+        boolean result = false;
         try {
             crudRepository.run(session -> session.merge(task));
-            return true;
+            result = true;
         } catch (Exception exception) {
             exception.printStackTrace();
-            return false;
         }
+        return result;
     }
 
     @Override
     public boolean deleteById(int taskId) {
+        boolean result = false;
         try {
             crudRepository.run(
                     "DELETE FROM Task WHERE id = :id",
                     Map.of("id", taskId)
             );
-            return true;
+            result = true;
         } catch (Exception exception) {
             exception.printStackTrace();
-            return false;
         }
+        return result;
     }
 
     @Override
     public boolean makeDone(int taskId) {
+        boolean result = false;
         try {
             crudRepository.run("UPDATE Task SET done = true WHERE id = :id",
                     Map.of("id", taskId));
-            return true;
+            result = true;
         } catch (Exception exception) {
             exception.printStackTrace();
-            return false;
         }
+        return result;
     }
 
     @Override

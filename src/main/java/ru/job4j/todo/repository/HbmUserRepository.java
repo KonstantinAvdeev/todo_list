@@ -14,13 +14,14 @@ public class HbmUserRepository implements UserRepository {
 
     @Override
     public Optional<User> save(User user) {
+        Optional<User> userOptional = Optional.empty();
         try {
             crudRepository.run(session -> session.persist(user));
-            return Optional.of(user);
+            userOptional = Optional.of(user);
         } catch (Exception exception) {
             exception.printStackTrace();
-            return Optional.empty();
         }
+        return userOptional;
     }
 
     @Override
