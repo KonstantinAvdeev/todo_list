@@ -27,7 +27,8 @@
                 <div class="navbar-nav me-auto">
                     <a class="nav-item nav-link" href="/">Главная</a>
                     <a class="nav-item nav-link" th:href="@{/tasks}">Все задачи</a>
-                    <a class="nav-item nav-link" th:href="@{/tasks?done=true}">Выполненные задачи</a>
+                    <a class="nav-item nav-link" th:href="@{/tasks?done=true}">Выполненные
+                        задачи</a>
                     <a class="nav-item nav-link" th:href="@{/tasks?done=false}">Новые задачи</a>
                 </div>
                 <div class="d-flex" th:if="${user.name == 'Гость'}">
@@ -52,6 +53,13 @@
                 <label for="description" class="form-label"><b>Описание задачи</b></label>
                 <textarea class="form-control" id="description" name="description" rows="10"
                           placeholder="Опишите задачу"></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="priority"><b>Приоритет</b></label>
+                <select class="form-control" id="priority" name="priority.id">
+                    <option th:each="priority : ${priorities}" th:value="${priority.id}"
+                            th:text="${priority.name}"></option>
+                </select>
             </div>
 
             <div class="mb-3 row">

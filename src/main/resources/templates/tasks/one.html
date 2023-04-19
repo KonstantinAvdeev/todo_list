@@ -52,6 +52,10 @@
                 <label for="description" class="form-label"><b>Описание задачи</b></label>
                 <p class="form-control" id="description" th:text="${task.description}"></p>
             </div>
+            <div class="mb-3">
+                <label for="priority" class="form-label"><b>Приоритет</b></label>
+                <p class="form-control" id="priority" th:text="${task.priority.name}"></p>
+            </div>
             <div class="mb-3 row">
                 <div class="row">
                     <div class="col-4"><a class="btn btn-success w-100"
