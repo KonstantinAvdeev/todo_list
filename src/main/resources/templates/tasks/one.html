@@ -56,6 +56,12 @@
                 <label for="priority" class="form-label"><b>Приоритет</b></label>
                 <p class="form-control" id="priority" th:text="${task.priority.name}"></p>
             </div>
+            <div class="col">
+                <label for="categories" class="form-label"><b>Категории</b></label>
+                <ul id="categories">
+                    <li th:each="category : ${task.categories}" th:text="${category.name}"></li>
+                </ul>
+            </div>
             <div class="mb-3 row">
                 <div class="row">
                     <div class="col-4"><a class="btn btn-success w-100"

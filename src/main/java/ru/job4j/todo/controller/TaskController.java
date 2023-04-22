@@ -6,9 +6,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.job4j.todo.model.Task;
 import ru.job4j.todo.model.User;
+import ru.job4j.todo.service.CategoryService;
 import ru.job4j.todo.service.PriorityService;
 import ru.job4j.todo.service.TaskService;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -17,6 +20,7 @@ import java.util.Optional;
 public class TaskController {
     private final TaskService taskService;
     private final PriorityService priorityService;
+    private final CategoryService categoryService;
 
     @GetMapping
     public String getAll(Model model, @RequestParam(required = false) Boolean done) {
@@ -31,12 +35,17 @@ public class TaskController {
     @GetMapping("/create")
     public String getCreationPage(Model model) {
         model.addAttribute("priorities", priorityService.findAll());
+        model.addAttribute("categories", categoryService.findAll());
+        model.addAttribute("categoryId", new ArrayList<Integer>());
         return "tasks/create";
     }
 
     @PostMapping("/create")
-    public String create(@ModelAttribute Task task, @SessionAttribute User user, Model model) {
+    public String create(@ModelAttribute Task task, @SessionAttribute User user, Model model,
+                         @RequestParam("categoryId") List<Integer> categoryId) {
         task.setUser(user);
+        var categories = categoryService.findById(categoryId);
+        task.setCategories(categories);
         taskService.create(task);
         return "redirect:/tasks";
     }
@@ -49,7 +58,6 @@ public class TaskController {
             return "errors/404";
         }
         model.addAttribute("task", taskOptional.get());
-        model.addAttribute("priorities", priorityService.findAll());
         return "tasks/one";
     }
 
@@ -62,12 +70,17 @@ public class TaskController {
         }
         model.addAttribute("task", taskOptional.get());
         model.addAttribute("priorities", priorityService.findAll());
+        model.addAttribute("categories", categoryService.findAll());
+        model.addAttribute("categoryId", new ArrayList<Integer>());
         return "tasks/update";
     }
 
     @PostMapping("/update")
-    public String update(@ModelAttribute Task task, @SessionAttribute User user, Model model) {
+    public String update(@ModelAttribute Task task, @SessionAttribute User user, Model model,
+                         @RequestParam("categoryId") List<Integer> categoriesId) {
         task.setUser(user);
+        var categories = categoryService.findById(categoriesId);
+        task.setCategories(categories);
         boolean isUpdated = taskService.update(task);
         if (!isUpdated) {
             model.addAttribute("error", "Задача не найдена!");
