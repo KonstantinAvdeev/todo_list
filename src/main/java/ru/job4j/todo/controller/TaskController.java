@@ -44,9 +44,7 @@ public class TaskController {
     public String create(@ModelAttribute Task task, @SessionAttribute User user, Model model,
                          @RequestParam("categoryId") List<Integer> categoryId) {
         task.setUser(user);
-        var categories = categoryService.findById(categoryId);
-        task.setCategories(categories);
-        taskService.create(task);
+        taskService.create(task, categoryId);
         return "redirect:/tasks";
     }
 
@@ -77,11 +75,9 @@ public class TaskController {
 
     @PostMapping("/update")
     public String update(@ModelAttribute Task task, @SessionAttribute User user, Model model,
-                         @RequestParam("categoryId") List<Integer> categoriesId) {
+                         @RequestParam("categoryId") List<Integer> categoryId) {
         task.setUser(user);
-        var categories = categoryService.findById(categoriesId);
-        task.setCategories(categories);
-        boolean isUpdated = taskService.update(task);
+        boolean isUpdated = taskService.update(task, categoryId);
         if (!isUpdated) {
             model.addAttribute("error", "Задача не найдена!");
             return "errors/404";

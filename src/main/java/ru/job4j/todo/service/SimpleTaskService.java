@@ -12,14 +12,19 @@ import java.util.Optional;
 @AllArgsConstructor
 public class SimpleTaskService implements TaskService {
     private final TaskRepository taskRepository;
+    private final CategoryService categoryService;
 
     @Override
-    public Task create(Task task) {
+    public Task create(Task task, List<Integer> categoryId) {
+        var categories = categoryService.findById(categoryId);
+        task.setCategories(categories);
         return taskRepository.create(task);
     }
 
     @Override
-    public boolean update(Task task) {
+    public boolean update(Task task, List<Integer> categoryId) {
+        var categories = categoryService.findById(categoryId);
+        task.setCategories(categories);
         return taskRepository.update(task);
     }
 

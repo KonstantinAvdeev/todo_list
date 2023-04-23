@@ -14,7 +14,7 @@ public class HbmCategoryRepository implements CategoryRepository {
 
     @Override
     public List<Category> findAll() {
-        return crudRepository.query("FROM Category", Category.class);
+        return crudRepository.query("FROM Category ORDER BY id", Category.class);
     }
 
     @Override

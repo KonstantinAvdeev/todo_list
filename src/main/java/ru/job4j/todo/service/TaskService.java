@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface TaskService {
-    Task create(Task task);
+    Task create(Task task, List<Integer> categoryId);
 
-    boolean update(Task task);
+    boolean update(Task task, List<Integer> categoryId);
 
     boolean deleteById(int taskId);
 
