@@ -3,10 +3,13 @@ package ru.job4j.todo.service;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.job4j.todo.model.Task;
+import ru.job4j.todo.model.User;
 import ru.job4j.todo.repository.TaskRepository;
 
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Optional;
+import java.util.TimeZone;
 
 @Service
 @AllArgsConstructor
@@ -53,4 +56,13 @@ public class SimpleTaskService implements TaskService {
         return taskRepository.findById(taskId);
     }
 
+    public static void addUserTimeZone(User user, Task task) {
+        var defaultZone = TimeZone.getDefault().toZoneId();
+        var userZone = ZoneId.of(user.getTimezone());
+        var time = task.getCreated()
+                .atZone(defaultZone)
+                .withZoneSameInstant(userZone)
+                .toLocalDateTime();
+        task.setCreated(time);
+    }
 }

@@ -6,28 +6,36 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.job4j.todo.model.Task;
 import ru.job4j.todo.model.User;
-import ru.job4j.todo.service.CategoryService;
-import ru.job4j.todo.service.PriorityService;
-import ru.job4j.todo.service.TaskService;
+import ru.job4j.todo.service.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.TimeZone;
 
 @Controller
 @AllArgsConstructor
 @RequestMapping("/tasks")
 public class TaskController {
-    private final TaskService taskService;
+    private final SimpleTaskService taskService;
     private final PriorityService priorityService;
     private final CategoryService categoryService;
+    private final SimpleUserService userService;
 
     @GetMapping
-    public String getAll(Model model, @RequestParam(required = false) Boolean done) {
+    public String getAll(Model model, @RequestParam(required = false) Boolean done,
+                         HttpSession httpSession) {
+        var user = (User) httpSession.getAttribute("user");
+        List<Task> tasks;
         if (done == null) {
-            model.addAttribute("tasks", taskService.findAll());
+            tasks = taskService.findAll();
+            tasks.forEach(task -> taskService.addUserTimeZone(user, task));
+            model.addAttribute("tasks", tasks);
         } else {
-            model.addAttribute("tasks", taskService.findAllByDone(done));
+            tasks = taskService.findAllByDone(done);
+            tasks.forEach(task -> taskService.addUserTimeZone(user, task));
+            model.addAttribute("tasks", tasks);
         }
         return "tasks/list";
     }

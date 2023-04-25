@@ -33,10 +33,10 @@ public class UserController {
     @PostMapping("/register")
     public String register(@ModelAttribute User user, Model model, @RequestParam("timezone")
     String timeZone) {
-        if (timeZone.isEmpty()) {
-            user.setTimezone(TimeZone.getDefault().getDisplayName());
-        } else {
+        if (timeZone != null) {
             user.setTimezone(timeZone);
+        } else {
+            user.setTimezone("UTC");
         }
         Optional<User> userOptional = userService.save(user);
         user.setName("Гость");

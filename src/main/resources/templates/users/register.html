@@ -66,7 +66,7 @@
                     <div class="mb-3">
                         <label for="timezone"><b>Часовой пояс</b></label>
                         <select class="form-control" id="timezone" name="timezone">
-                            <option th:each="timeZone : ${timeZones}" th:value="${timeZone}"
+                            <option th:each="timeZone : ${timeZones}" th:value="${timeZone.getID()}"
                                     th:text="${timeZone.getDisplayName()}"></option>
                         </select>
                     </div>
