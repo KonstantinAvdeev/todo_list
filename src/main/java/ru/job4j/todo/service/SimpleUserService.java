@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.job4j.todo.model.User;
 import ru.job4j.todo.repository.UserRepository;
 
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -32,7 +33,7 @@ public class SimpleUserService implements UserService {
 
     public List<TimeZone> getTimeZones() {
         var zones = new ArrayList<TimeZone>();
-        for (String timeId : TimeZone.getAvailableIDs()) {
+        for (String timeId : ZoneId.getAvailableZoneIds()) {
             zones.add(TimeZone.getTimeZone(timeId));
         }
         return zones;

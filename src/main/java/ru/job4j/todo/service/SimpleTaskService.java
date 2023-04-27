@@ -58,7 +58,7 @@ public class SimpleTaskService implements TaskService {
 
     public static void addUserTimeZone(User user, Task task) {
         var defaultZone = TimeZone.getDefault().toZoneId();
-        var userZone = ZoneId.of(user.getTimezone());
+        var userZone = user.getTimezone() == null ? defaultZone : ZoneId.of(user.getTimezone());
         var time = task.getCreated()
                 .atZone(defaultZone)
                 .withZoneSameInstant(userZone)
