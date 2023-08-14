@@ -35,13 +35,13 @@ mvn spring-boot:run
 ## Взаимодействие с приложением:
 
 **Список всех задач.**
-![](files/alltasks.png)
+![](files/alltaskspage.png)
 
 **Внутри конкретной задачи.**
-![](files/inside task.png)
+![](files/insidetask.png)
 
 **Страница редактирования.**
-![](files/update.png)
+![](files/updatepage.png)
 
 **Страница входа.**
 ![](files/login.png)
